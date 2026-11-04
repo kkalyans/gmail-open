@@ -2,12 +2,19 @@
 <p>Opening Gmail… <a id="w" href="#">Open in browser instead</a></p>
 <script>
 var q=new URLSearchParams(location.search),id=(q.get('id')||'').replace(/[^A-Za-z0-9_-]/g,''),
-acct=encodeURIComponent(q.get('acct')||'0'),n=(q.get('n')||'0').replace(/\D/g,'')||'0',
-web='https://mail.google.com/mail/u/'+acct+'/#all/'+id;
+ra=q.get('acct')||'0',isMail=ra.indexOf('@')>0,acct=encodeURIComponent(ra),
+n=parseInt((q.get('n')||'0').replace(/\D/g,'')||'0',10),fmt=(q.get('fmt')||'a').toLowerCase(),
+web=isMail?'https://mail.google.com/mail/?authuser='+acct+'#all/'+id:'https://mail.google.com/mail/u/'+acct.replace(/\D/g,'')+'/#all/'+id;
+var app={
+ a:'googlegmail:///cv='+id+'/accountId='+(n+1)+'&create-new-tab',
+ b:'googlegmail:///'+(isMail?acct+'/':'')+'cv='+id,
+ c:'https://mail.google.com/mail/mu/mp/'+n+'/#cv/All%20Mail/'+id,
+ d:'googlegmail://'
+}[fmt];
 document.getElementById('w').href=web;
-if(/iPhone|iPad|iPod/.test(navigator.userAgent)&&id){
- var t=setTimeout(function(){location.replace(web)},2000);
+if(fmt!=='web'&&app&&/iPhone|iPad|iPod/.test(navigator.userAgent)&&id){
+ var t=setTimeout(function(){location.replace(web)},2500);
  document.addEventListener('visibilitychange',function(){if(document.hidden)clearTimeout(t)});
- location.href='googlegmail:///cv='+id+'/accountId='+n+'&create-new-tab';
+ location.href=app;
 }else location.replace(web);
 </script></body></html>
