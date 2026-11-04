@@ -2,13 +2,23 @@
 <style>body{font:18px/1.5 system-ui,-apple-system,sans-serif;margin:0;padding:16px;background:#f6f8fc;color:#202124}
 #m{white-space:pre-wrap;word-wrap:break-word;background:#fff;border:1px solid #dadce0;border-radius:10px;padding:16px;font-size:19px;margin:0 0 16px}
 #b{display:block;width:100%;padding:18px;font-size:22px;font-weight:600;border:0;border-radius:10px;background:#1a73e8;color:#fff}
-#s{text-align:center;font-size:20px;margin-top:12px;min-height:1.5em;font-weight:600}.ok{color:#188038}.err{color:#d93025}</style></head><body>
-<div id="m"></div><button id="b" type="button">Copy</button><div id="s"></div>
+#s{text-align:center;font-size:20px;margin-top:12px;min-height:1.5em;font-weight:600}.ok{color:#188038}.err{color:#d93025}.v1 #h{font-weight:700;font-size:17px;color:#5f6368;margin:0 0 6px}.v1 #m{border-left:5px solid #1a73e8;background:#e8f0fe;font-style:normal}
+.v3 body,.v3{font-size:14px}.v3 body{padding:8px}.v3 #m{padding:8px;font-size:14px;border-radius:6px;margin-bottom:8px}.v3 #b,.v3 #w{padding:10px;font-size:16px}
+.v4 #m{padding:28px;font-size:23px;line-height:1.7}.v4 #b,.v4 #w{padding:24px;font-size:26px}
+#w{display:none;width:100%;padding:18px;font-size:22px;font-weight:600;border:0;border-radius:10px;background:#25D366;color:#fff;margin-top:10px;text-align:center;text-decoration:none;box-sizing:border-box}
+#k{display:none;text-align:center;margin-top:14px;font-size:19px}</style></head><body>
+<div id="h"></div><div id="m"></div><button id="b" type="button">Copy</button><div id="s"></div><a id="w">💬 Send on WhatsApp</a><div id="k"><a href="https://chat.google.com">← Back to Google Chat</a></div>
 <script>
 var t=new URLSearchParams(location.search).get('t')||'';
 var m=document.getElementById('m'),s=document.getElementById('s'),b=document.getElementById('b');
+var q=new URLSearchParams(location.search),v=q.get('v'),to=q.get('to');
 m.textContent=t||'(no message)';
-function done(ok){s.className=ok?'ok':'err';s.textContent=ok?'Copied ✓':'Tap Copy (or press and hold the text to copy)';if(ok)b.textContent='Copied ✓';}
+if(v)document.documentElement.className='v'+v;
+var h=document.getElementById('h');if(to&&v=='1')h.textContent='To '+to;if(to&&v=='2')m.textContent='To '+to+': '+t;
+var lb=q.get('label');if(lb)b.textContent=lb;
+var w=document.getElementById('w');if(q.get('wa')=='1'){w.href='https://wa.me/?text='+encodeURIComponent(t);w.style.display='block';}
+var k=document.getElementById('k');
+function done(ok){s.className=ok?'ok':'err';s.textContent=ok?'Copied ✓':'Tap Copy (or press and hold the text to copy)';if(ok){b.textContent='Copied ✓';if(q.get('back')=='1')k.style.display='block';}}
 function legacy(){try{var a=document.createElement('textarea');a.value=t;a.setAttribute('readonly','');a.style.position='fixed';a.style.top='-1000px';a.style.fontSize='16px';document.body.appendChild(a);a.focus();a.select();a.setSelectionRange(0,t.length);var ok=document.execCommand('copy');document.body.removeChild(a);return ok;}catch(e){return false;}}
 function copy(auto){if(!t)return;if(navigator.clipboard&&window.isSecureContext){navigator.clipboard.writeText(t).then(function(){done(true)},function(){var ok=legacy();if(ok||!auto)done(ok);});}else{var ok=legacy();if(ok||!auto)done(ok);}}
 b.addEventListener('click',function(){copy(false)});
