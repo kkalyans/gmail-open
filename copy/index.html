@@ -18,9 +18,8 @@ var h=document.getElementById('h');if(to&&v=='1')h.textContent='To '+to;if(to&&v
 var lb=q.get('label');if(lb)b.textContent=lb;
 var w=document.getElementById('w');if(q.get('wa')=='1'){w.href='https://wa.me/?text='+encodeURIComponent(t);w.style.display='block';}
 var k=document.getElementById('k');
-function done(ok){s.className=ok?'ok':'err';s.textContent=ok?'Copied ✓':'Tap Copy (or press and hold the text to copy)';if(ok){b.textContent='Copied ✓';if(q.get('back')=='1')k.style.display='block';}}
-function legacy(){try{var a=document.createElement('textarea');a.value=t;a.setAttribute('readonly','');a.style.position='fixed';a.style.top='-1000px';a.style.fontSize='16px';document.body.appendChild(a);a.focus();a.select();a.setSelectionRange(0,t.length);var ok=document.execCommand('copy');document.body.removeChild(a);return ok;}catch(e){return false;}}
+function done(ok){s.className=ok?'ok':'err';s.textContent=ok?'Copied, go back to Chat and paste':'Tap Copy (or press and hold the text to copy)';if(ok){b.textContent='Copied, go back';if(q.get('back')=='1')k.style.display='block';}}
+function legacy(){try{var a=document.createElement('textarea');a.value=t;a.setAttribute('readonly','');a.style.position='fixed';a.style.top='-1000px';a.style.fontSize='16px';document.body.appendChild(a);a.select();a.setSelectionRange(0,t.length);var ok=document.execCommand('copy');document.body.removeChild(a);return ok;}catch(e){return false;}}
 function copy(auto){if(!t)return;if(navigator.clipboard&&window.isSecureContext){navigator.clipboard.writeText(t).then(function(){done(true)},function(){var ok=legacy();if(ok||!auto)done(ok);});}else{var ok=legacy();if(ok||!auto)done(ok);}}
-b.addEventListener('click',function(){copy(false)});
-copy(true);
+b.addEventListener('click',function(e){e.preventDefault();copy(false);});
 </script></body></html>
